@@ -264,14 +264,14 @@ namespace Barotrauma
 			lua.Globals["ClientPermissions"] = UserData.CreateStatic<ClientPermissions>();
 
 			List<string> modulePaths = new List<string>();
-
-			foreach (string d in Directory.GetDirectories("Mods"))
+			foreach (ContentPackage d in GameMain.Config.AllEnabledPackages.ToArray())
 			{
-				modulePaths.Add(d + "/Lua/?");
+				string goodpath = d.Path.Remove(d.Path.IndexOf("/filelist.xml"),13);
+				modulePaths.Add(goodpath + "/Lua/?");
 
-				if (Directory.Exists(d + "/Lua/Autorun"))
+				if (Directory.Exists(goodpath + "/Lua/Autorun"))
 				{
-					luaScriptLoader.RunFolder(d + "/Lua/Autorun");
+					luaScriptLoader.RunFolder(goodpath + "/Lua/Autorun");
 				}
 			}
 
